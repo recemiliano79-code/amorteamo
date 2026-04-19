@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Mi Princesa 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #c8426a;
+    --rose-light: #e8789a;
+    --rose-pale: #f5c0d0;
+    --gold: #d4af6a;
+    --gold-light: #f0d090;
+    --cream: #fdf5f0;
+    --deep: #1a0810;
+    --dark: #2d0f1e;
+    --mid: #6b2040;
+    --text-warm: #3d1428;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── CANVAS DE FONDO ─── */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ─── PÉTALOS ─── */
+  .petal {
+    position: fixed;
+    top: -40px;
+    pointer-events: none;
+    z-index: 1;
+    animation: petalFall linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes petalFall {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
+    5%   { opacity: 0.8; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(110vh) rotate(900deg) translateX(60px); opacity: 0; }
+  }
+
+  /* ─── WRAPPER ─── */
+  .wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    text-align: center;
+    padding: 5rem 0 3rem;
+    animation: heroIn 1.8s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    opacity: 0.6;
+  }
+
+  .ornament-line {
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .ornament-line.right {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .ornament-diamond {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .heart-icon {
+    font-size: 3.5rem;
+    display: block;
+    margin: 0 auto 1.5rem;
+    animation: pulse 2.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(200,66,106,0.8));
+  }
+
+  @keyframes pulse {
+    0%,100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(200,66,106,0.6)); }
+    50%      { transform: scale(1.12); filter: drop-shadow(0 0 40px rgba(200,66,106,1)); }
+  }
+
+  .hero-sup {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    opacity: 0.8;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 8vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    letter-spacing: -1px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--rose-light);
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--rose-pale);
+    margin-top: 1.2rem;
+    opacity: 0.75;
+    letter-spacing: 1px;
+  }
+
+  /* ─── SEPARADOR ─── */
+  .sep {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0;
+    opacity: 0.35;
+  }
+  .sep-line { flex: 1; height: 1px; background: var(--rose-pale); }
+  .sep-icon { font-size: 0.85rem; color: var(--rose-pale); }
+
+  /* ─── CARTA ─── */
+  .letter-wrap {
+    position: relative;
+    margin: 1rem 0 3.5rem;
+    animation: fadeUp 1.2s 0.4s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .letter-border {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(212,175,106,0.25);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  .letter-border::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(212,175,106,0.1);
+    border-radius: 2px;
+  }
+
+  .letter-inner {
+    padding: 3rem 3.5rem;
+    background: linear-gradient(145deg, rgba(45,15,30,0.9) 0%, rgba(26,8,16,0.95) 100%);
+  }
+
+  .letter-header {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+  }
+
+  .big-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 7rem;
+    line-height: 0.5;
+    color: rgba(200,66,106,0.2);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.18rem;
+    line-height: 2;
+    color: rgba(253,245,240,0.85);
+    font-weight: 300;
+  }
+
+  .letter-body p { margin-bottom: 1.2rem; }
+
+  .letter-body .highlight {
+    color: var(--rose-light);
+    font-style: italic;
+  }
+
+  .letter-sign {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--rose-light);
+    text-align: right;
+    margin-top: 2rem;
+    font-weight: 400;
+  }
+
+  /* ─── SECCIÓN PLAYLIST ─── */
+  .playlist-header {
+    text-align: center;
+    margin: 4rem 0 2.5rem;
+    animation: fadeUp 1s 0.6s both;
+  }
+
+  .playlist-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 6px;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 0.8rem;
+  }
+
+  .playlist-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  /* ─── TARJETA DE CANCIÓN ─── */
+  .song-card {
+    position: relative;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(200,66,106,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(45,15,30,0.85) 0%, rgba(26,8,16,0.9) 100%);
+    transition: border-color 0.4s, transform 0.3s;
+    animation: fadeUp 1s both;
+    cursor: pointer;
+  }
+
+  .song-card:nth-child(1) { animation-delay: 0.7s; }
+  .song-card:nth-child(2) { animation-delay: 0.85s; }
+  .song-card:nth-child(3) { animation-delay: 1.0s; }
+  .song-card:nth-child(4) { animation-delay: 1.15s; }
+
+  .song-card:hover {
+    border-color: rgba(200,66,106,0.5);
+    transform: translateY(-3px);
+  }
+
+  .song-card.is-active {
+    border-color: var(--rose);
+    background: linear-gradient(135deg, rgba(90,20,45,0.9) 0%, rgba(45,10,25,0.95) 100%);
+  }
+
+  .song-card-glow {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--rose), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .song-card.is-active .song-card-glow { opacity: 1; }
+
+  .song-inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0;
+  }
+
+  .song-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    background: rgba(200,66,106,0.06);
+    border-right: 1px solid rgba(200,66,106,0.15);
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    color: rgba(200,66,106,0.4);
+    font-weight: 400;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .song-card.is-active .song-number {
+    color: var(--rose-light);
+    background: rgba(200,66,106,0.12);
+  }
+
+  .song-content {
+    padding: 1.6rem 2rem 1.4rem;
+  }
+
+  .song-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.4rem;
+  }
+
+  .song-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  .song-artist {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .song-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(245,192,208,0.65);
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+  }
+
+  .player-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .btn-play {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(200,66,106,0.5);
+    background: transparent;
+    color: var(--rose-light);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-play::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--rose);
+    opacity: 0;
+    transition: opacity 0.25s;
+    border-radius: 50%;
+  }
+
+  .btn-play:hover::before { opacity: 0.2; }
+
+  .song-card.is-active .btn-play {
+    border-color: var(--rose);
+    background: rgba(200,66,106,0.15);
+  }
+
+  .btn-icon { position: relative; z-index: 1; }
+
+  .progress-area { flex: 1; }
+
+  .progress-track {
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 6px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose), var(--rose-light));
+    width: 0%;
+    border-radius: 2px;
+    transition: width 0.8s linear;
+  }
+
+  .time-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: rgba(253,245,240,0.3);
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px;
+  }
+
+  .note-hint {
+    margin-top: 0.8rem;
+    font-size: 0.7rem;
+    color: rgba(212,175,106,0.4);
+    font-style: italic;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── BARS ANIMADOS (cuando está activo) ─── */
+  .sound-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 18px;
+  }
+
+  .sound-bars span {
+    width: 3px;
+    background: var(--rose);
+    border-radius: 1px;
+    animation: soundBar 0.8s ease-in-out infinite alternate;
+  }
+  .sound-bars span:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .sound-bars span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+  .sound-bars span:nth-child(3) { height: 10px; animation-delay: 0.05s; }
+  .sound-bars span:nth-child(4) { height: 16px; animation-delay: 0.25s; }
+
+  @keyframes soundBar {
+    from { transform: scaleY(0.3); }
+    to   { transform: scaleY(1); }
+  }
+
+  .song-card:not(.is-active) .sound-bars { display: none; }
+
+  /* ─── CIERRE ─── */
+  .footer {
+    text-align: center;
+    padding: 4rem 0 2rem;
+    animation: fadeUp 1s 1.4s both;
+  }
+
+  .footer-roses {
+    font-size: 2rem;
+    letter-spacing: 8px;
+    display: block;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  .footer-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(200,66,106,0.6);
+    letter-spacing: 2px;
+  }
+
+  .footer-ornament {
+    margin: 1.5rem auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0.3;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 560px) {
+    .letter-inner { padding: 2rem 1.8rem; }
+    .hero-title { font-size: 2.8rem; }
+    .song-content { padding: 1.2rem 1.4rem 1rem; }
+    .song-number { width: 48px; font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Canvas fondo -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Pétalos dinámicos -->
+<div id="petals-container"></div>
+
+<div class="wrapper">
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-diamond" style="opacity:0.5;width:5px;height:5px;"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line right"></div>
+    </div>
+    <span class="heart-icon">♥</span>
+    <p class="hero-sup">✦ Solo para ti ✦</p>
+    <h1 class="hero-title">Para mi <em>Princesa</em></h1>
+    <p class="hero-sub">Una playlist que nació de mi corazón...</p>
+  </section>
+
+  <div class="sep"><div class="sep-line"></div><span class="sep-icon">✦</span><div class="sep-line"></div></div>
+
+  <!-- ─── CARTA DE AMOR ─── -->
+  <div class="letter-wrap">
+    <div class="letter-border"></div>
+    <div class="letter-inner">
+      <p class="letter-header">✦ &nbsp; Una nota de amor &nbsp; ✦</p>
+      <span class="big-quote">"</span>
+      <div class="letter-body">
+        <p>Mi amor hermosa,</p>
+        <p>Hay sentimientos tan grandes que las palabras se quedan pequeñas. Pero hay algo que la música sí puede expresar — esa sensación de que el mundo entero desaparece cuando estás cerca, que <span class="highlight">tú eres mi lugar favorito en el universo.</span></p>
+        <p>Cada canción que escogí aquí lleva tu nombre escrito entre las notas. Cuando las escuches, cierra los ojos y sabe que en ese momento, donde quieras que estés, estoy pensando en ti con una sonrisa que no puedo disimular.</p>
+        <p>Eres mi princesa. Mi calma. Mi razón de querer ser mejor cada día. <span class="highlight">Te amo más de lo que esta pantalla podría contener.</span></p>
+      </div>
+      <p class="letter-sign">Con todo mi corazón, tuyo para siempre ♥</p>
+    </div>
+  </div>
+
+  <!-- ─── PLAYLIST ─── -->
+  <div class="playlist-header">
+    <p class="playlist-label">✦ &nbsp; Nuestra música &nbsp; ✦</p>
+    <h2 class="playlist-title">Canciones para tu alma</h2>
+  </div>
+
+  <div id="playlist">
+
+    <!-- 1 -->
+    <div class="song-card" data-index="0" data-duration="196" onclick="togglePlay(0)">
+      <div class="song-card-glow"></div>
+      <div class="song-inner">
+        <div class="song-number">
+          <span>01</span>
+          <div class="sound-bars"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="song-content">
+          <div class="song-meta">
+            <div class="song-name">Mi Princesa</div>
+            <div class="song-artist">Remmy Valenzuela</div>
+          </div>
+          <p class="song-quote">"Porque eres mi princesa, mi reina, todo lo que quiero..."</p>
+          <div class="player-row">
+            <button class="btn-play"><span class="btn-icon" id="icon-0">▶</span></button>
+            <div class="progress-area">
+              <div class="progress-track" onclick="seekSong(event,0)">
+                <div class="progress-fill" id="prog-0"></div>
+              </div>
+              <div class="time-row"><span id="cur-0">0:00</span><span id="dur-0">3:16</span></div>
+            </div>
+          </div>
+          <p class="note-hint">♪ Ábrela en Spotify · YouTube · Apple Music</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="song-card" data-index="1" data-duration="214" onclick="togglePlay(1)">
+      <div class="song-card-glow"></div>
+      <div class="song-inner">
+        <div class="song-number">
+          <span>02</span>
+          <div class="sound-bars"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="song-content">
+          <div class="song-meta">
+            <div class="song-name">Una Lady Como Tú</div>
+            <div class="song-artist">MTZ Manuel Turizo</div>
+          </div>
+          <p class="song-quote">"Porque no existe otra igual a ti en todo este mundo..."</p>
+          <div class="player-row">
+            <button class="btn-play"><span class="btn-icon" id="icon-1">▶</span></button>
+            <div class="progress-area">
+              <div class="progress-track" onclick="seekSong(event,1)">
+                <div class="progress-fill" id="prog-1"></div>
+              </div>
+              <div class="time-row"><span id="cur-1">0:00</span><span id="dur-1">3:34</span></div>
+            </div>
+          </div>
+          <p class="note-hint">♪ Ábrela en Spotify · YouTube · Apple Music</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="song-card" data-index="2" data-duration="269" onclick="togglePlay(2)">
+      <div class="song-card-glow"></div>
+      <div class="song-inner">
+        <div class="song-number">
+          <span>03</span>
+          <div class="sound-bars"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="song-content">
+          <div class="song-meta">
+            <div class="song-name">All of Me</div>
+            <div class="song-artist">John Legend</div>
+          </div>
+          <p class="song-quote">"All of me loves all of you — todo de mí, todo para ti..."</p>
+          <div class="player-row">
+            <button class="btn-play"><span class="btn-icon" id="icon-2">▶</span></button>
+            <div class="progress-area">
+              <div class="progress-track" onclick="seekSong(event,2)">
+                <div class="progress-fill" id="prog-2"></div>
+              </div>
+              <div class="time-row"><span id="cur-2">0:00</span><span id="dur-2">4:29</span></div>
+            </div>
+          </div>
+          <p class="note-hint">♪ Ábrela en Spotify · YouTube · Apple Music</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="song-card" data-index="3" data-duration="195" onclick="togglePlay(3)">
+      <div class="song-card-glow"></div>
+      <div class="song-inner">
+        <div class="song-number">
+          <span>04</span>
+          <div class="sound-bars"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="song-content">
+          <div class="song-meta">
+            <div class="song-name">Make You Feel My Love</div>
+            <div class="song-artist">Adele</div>
+          </div>
+          <p class="song-quote">"Haría cualquier cosa para que sintieras cuánto te amo..."</p>
+          <div class="player-row">
+            <button class="btn-play"><span class="btn-icon" id="icon-3">▶</span></button>
+            <div class="progress-area">
+              <div class="progress-track" onclick="seekSong(event,3)">
+                <div class="progress-fill" id="prog-3"></div>
+              </div>
+              <div class="time-row"><span id="cur-3">0:00</span><span id="dur-3">3:15</span></div>
+            </div>
+          </div>
+          <p class="note-hint">♪ Ábrela en Spotify · YouTube · Apple Music</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /playlist -->
+
+  <!-- ─── PIE ─── -->
+  <footer class="footer">
+    <span class="footer-roses">🌹 ♥ 🌹</span>
+    <p class="footer-msg">Hecho con amor, solo para ti, mi princesa</p>
+    <div class="footer-ornament">
+      <div class="ornament-line" style="max-width:80px;background:linear-gradient(90deg,transparent,var(--gold));"></div>
+      <div class="ornament-diamond" style="background:var(--gold);"></div>
+      <div class="ornament-line" style="max-width:80px;background:linear-gradient(90deg,var(--gold),transparent);"></div>
+    </div>
+  </footer>
+
+</div><!-- /wrapper -->
+
+<script>
+/* ─── CANVAS fondo estrellas + partículas ─── */
+(function(){
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let W, H;
+  const stars = [];
+  const N_STARS = 120;
+
+  function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
+  resize();
+  addEventListener('resize', resize);
+
+  for(let i=0;i<N_STARS;i++){
+    stars.push({
+      x: Math.random()*2000,
+      y: Math.random()*2000,
+      r: Math.random()*1.4+0.3,
+      a: Math.random(),
+      da: (Math.random()-0.5)*0.008
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // gradient bg
+    const g = ctx.createRadialGradient(W*.35,H*.2,0,W*.5,H*.5,W*.9);
+    g.addColorStop(0,'rgba(80,15,40,0.6)');
+    g.addColorStop(0.5,'rgba(35,8,22,0.4)');
+    g.addColorStop(1,'rgba(10,2,8,0.2)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,W,H);
+
+    stars.forEach(s=>{
+      s.a += s.da;
+      if(s.a<0||s.a>1) s.da*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x % W, s.y % H, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,220,235,${s.a*0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── PÉTALOS ─── */
+(function(){
+  const cont = document.getElementById('petals-container');
+  const items = ['🌸','💕','✦','🌹'];
+  for(let i=0;i<22;i++){
+    const d = document.createElement('div');
+    d.className = 'petal';
+    d.textContent = items[i%items.length];
+    const size = 10 + Math.random()*12;
+    d.style.cssText = `
+      left:${Math.random()*100}%;
+      font-size:${size}px;
+      animation-duration:${10+Math.random()*14}s;
+      animation-delay:${Math.random()*16}s;
+    `;
+    cont.appendChild(d);
+  }
+})();
+
+/* ─── PLAYER ─── */
+const durations = [196,214,269,195];
+let elapsed   = [0,0,0,0];
+let playing   = [false,false,false,false];
+let timers    = [null,null,null,null];
+let currentActive = -1;
+
+function fmt(s){
+  return Math.floor(s/60)+':'+(('0'+Math.floor(s%60)).slice(-2));
+}
+
+function updateCard(i){
+  const pct = durations[i]>0 ? (elapsed[i]/durations[i]*100) : 0;
+  document.getElementById('prog-'+i).style.width = pct+'%';
+  document.getElementById('cur-'+i).textContent  = fmt(elapsed[i]);
+}
+
+function stopCard(i){
+  clearInterval(timers[i]);
+  timers[i] = null;
+  playing[i] = false;
+  document.getElementById('icon-'+i).textContent = '▶';
+  document.querySelectorAll('.song-card')[i].classList.remove('is-active');
+}
+
+function togglePlay(i){
+  if(playing[i]){
+    stopCard(i);
+    currentActive = -1;
+    return;
+  }
+  // detener otros
+  for(let j=0;j<4;j++) if(j!==i && playing[j]) stopCard(j);
+
+  playing[i] = true;
+  currentActive = i;
+  document.getElementById('icon-'+i).textContent = '⏸';
+  document.querySelectorAll('.song-card')[i].classList.add('is-active');
+  updateCard(i);
+
+  timers[i] = setInterval(()=>{
+    elapsed[i]++;
+    if(elapsed[i]>=durations[i]){
+      elapsed[i]=0;
+      stopCard(i);
+      currentActive=-1;
+    }
+    updateCard(i);
+  },1000);
+}
+
+function seekSong(e,i){
+  e.stopPropagation();
+  const track = e.currentTarget;
+  const ratio = Math.max(0,Math.min(1, e.offsetX/track.offsetWidth));
+  elapsed[i] = Math.floor(ratio*durations[i]);
+  updateCard(i);
+}
+
+// Inicializar barras de tiempo
+for(let i=0;i<4;i++) updateCard(i);
+</script>
+</body>
+</html>
