@@ -2,765 +2,615 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Para Mi Princesa 💕</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Cinzel:wght@400;600&family=Circular+Std:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;overflow:hidden;}
-body{
-  font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;
-  background:#0a0a0a;
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  height:100vh;
-  overflow:hidden;
-  user-select:none;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --c1:#e8456a;--c2:#e8456a;
+  --bg:#080610;--bg2:#0f0a1a;
+  --sur:rgba(255,255,255,.04);--sur2:rgba(255,255,255,.08);
+  --brd:rgba(255,255,255,.07);--brd2:rgba(255,255,255,.14);
+  --t1:#fff;--t2:rgba(255,255,255,.55);--t3:rgba(255,255,255,.25);
+  --r:16px;--rs:10px;
 }
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{font-family:'DM Sans',sans-serif;color:var(--t1);}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#fff;cursor:pointer;margin-top:-4px;}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:rgba(255,255,255,.15);}
 
-/* ── CANVAS BG ── */
-#bgc{position:fixed;inset:0;z-index:0;pointer-events:none;transition:background 1s;}
+/* BG */
+#bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;animation:bfloat 14s ease-in-out infinite;}
+.blob:nth-child(1){width:600px;height:600px;top:-150px;left:-150px;background:var(--c1);animation-delay:0s;}
+.blob:nth-child(2){width:500px;height:500px;bottom:-120px;right:-120px;background:var(--c2);animation-delay:-5s;}
+.blob:nth-child(3){width:350px;height:350px;top:35%;left:35%;background:#6030c8;opacity:.1;animation-delay:-9s;}
+@keyframes bfloat{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(25px,-18px) scale(1.04);}66%{transform:translate(-18px,14px) scale(.96);}}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:44px 44px;}
+.bg-vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 25%,rgba(0,0,0,.75) 100%);}
 
-/* ── PETALS ── */
-.petal{position:fixed;top:-30px;pointer-events:none;z-index:1;font-size:12px;animation:pfall linear infinite;opacity:0;}
-@keyframes pfall{0%{opacity:0;transform:translateY(0) rotate(0deg);}5%{opacity:.6;}90%{opacity:.4;}100%{opacity:0;transform:translateY(105vh) rotate(720deg) translateX(40px);}}
+/* PETALS */
+.petal{position:fixed;pointer-events:none;z-index:1;animation:pfal linear infinite;opacity:0;}
+@keyframes pfal{0%{transform:translateY(-30px) rotate(0) translateX(0);opacity:0;}6%{opacity:.65;}88%{opacity:.45;}100%{transform:translateY(108vh) rotate(800deg) translateX(55px);opacity:0;}}
 
-/* ══════════ LAYOUT ══════════ */
-.app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;}
+/* APP GRID */
+.app{position:relative;z-index:2;display:grid;grid-template-rows:56px 1fr 96px;height:100vh;overflow:hidden;}
 
-/* ── TOP: song selector ── */
-.top-bar{
-  display:flex;align-items:center;gap:8px;
-  padding:14px 20px 10px;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-  flex-shrink:0;
-  overflow-x:auto;
-  scrollbar-width:none;
+/* ══ HERO ══ */
+#hero{
+  position:fixed;inset:0;z-index:200;overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem 1rem 3rem;
+  background:radial-gradient(ellipse at 40% 25%,rgba(232,69,106,.22) 0%,transparent 55%),
+             radial-gradient(ellipse at 72% 82%,rgba(90,30,160,.18) 0%,transparent 50%),#080610;
+  transition:opacity .9s,visibility .9s;
 }
+#hero.gone{opacity:0;visibility:hidden;pointer-events:none;}
+.hi{display:flex;flex-direction:column;align-items:center;gap:18px;max-width:500px;width:100%;}
+.h-badge{font-size:.58rem;letter-spacing:5px;text-transform:uppercase;color:#f0c060;border:1px solid rgba(240,192,96,.28);padding:6px 18px;border-radius:20px;background:rgba(240,192,96,.05);}
+.h-heart{font-size:3.4rem;line-height:1;animation:hb 1.9s ease-in-out infinite;filter:drop-shadow(0 0 22px rgba(232,69,106,.9));}
+@keyframes hb{0%,100%{transform:scale(1);}14%{transform:scale(1.19);}28%{transform:scale(1);}42%{transform:scale(1.1);}70%{transform:scale(1);}}
+.h-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,9vw,5.2rem);font-weight:400;text-align:center;line-height:1.05;}
+.h-title em{font-style:italic;background:linear-gradient(135deg,#e8456a,#ff7096,#f0c060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.h-sub{font-size:.9rem;color:var(--t2);text-align:center;font-weight:300;}
+.letter{width:100%;border-radius:var(--r);border:1px solid rgba(232,69,106,.18);background:rgba(255,255,255,.03);backdrop-filter:blur(20px);padding:1.8rem 2rem;position:relative;overflow:hidden;}
+.letter::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,69,106,.45),transparent);}
+.l-stamp{position:absolute;top:14px;right:14px;font-size:1.6rem;opacity:.12;transform:rotate(10deg);}
+.l-greet{font-family:'Playfair Display',serif;font-style:italic;font-size:.95rem;color:#ff7096;margin-bottom:10px;}
+.l-body{font-size:.85rem;line-height:1.9;color:rgba(255,255,255,.7);font-weight:300;}
+.l-body p{margin-bottom:.75rem;}
+.l-body .hl{color:#ff7096;font-style:italic;}
+.l-sign{font-family:'Playfair Display',serif;font-style:italic;font-size:1.05rem;color:#ff7096;text-align:right;margin-top:1rem;}
+.btn-enter{width:100%;padding:15px;border-radius:50px;background:linear-gradient(135deg,#e8456a,#a01840);color:#fff;font-size:.82rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;box-shadow:0 8px 30px rgba(232,69,106,.4);transition:all .3s;animation:ep 2.5s ease-in-out infinite;}
+@keyframes ep{0%,100%{box-shadow:0 8px 30px rgba(232,69,106,.4),0 0 0 0 rgba(232,69,106,.25);}50%{box-shadow:0 12px 38px rgba(232,69,106,.55),0 0 0 10px rgba(232,69,106,0);}}
+.btn-enter:hover{transform:translateY(-2px);}
+
+/* ══ TOP BAR ══ */
+.top-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:rgba(6,4,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--brd);overflow-x:auto;scrollbar-width:none;}
 .top-bar::-webkit-scrollbar{display:none;}
-.song-pill{
-  display:flex;align-items:center;gap:8px;
-  padding:8px 14px;border-radius:30px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.05);
-  cursor:pointer;white-space:nowrap;
-  transition:all .25s;flex-shrink:0;
-}
-.song-pill:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);}
-.song-pill.active{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4);}
-.pill-num{font-size:.65rem;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:1px;}
-.song-pill.active .pill-num{color:#fff;}
-.pill-title{font-size:.8rem;font-weight:600;color:rgba(255,255,255,.7);}
-.song-pill.active .pill-title{color:#fff;}
-.pill-artist{font-size:.68rem;color:rgba(255,255,255,.35);}
-.song-pill.active .pill-artist{color:rgba(255,255,255,.7);}
+.spill{display:flex;align-items:center;gap:7px;padding:7px 12px 7px 9px;border-radius:40px;border:1px solid var(--brd);background:var(--sur);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .22s;position:relative;overflow:hidden;}
+.spill::after{content:'';position:absolute;inset:0;opacity:0;background:linear-gradient(135deg,var(--c1),transparent);transition:opacity .3s;border-radius:40px;}
+.spill:hover{border-color:var(--brd2);}
+.spill.on{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.09);}
+.spill.on::after{opacity:.18;}
+.p-dot{width:7px;height:7px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:background .3s;position:relative;z-index:1;}
+.spill.on .p-dot,.spill.pl .p-dot{background:var(--c1);box-shadow:0 0 7px var(--c1);}
+.p-inf{position:relative;z-index:1;}
+.p-name{font-size:.73rem;font-weight:600;color:var(--t2);transition:color .22s;}
+.spill.on .p-name{color:#fff;}
+.p-art{font-size:.6rem;color:var(--t3);}
+.p-bars{display:none;align-items:flex-end;gap:1.5px;height:13px;margin-left:3px;}
+.spill.pl .p-bars{display:flex;}
+.p-bars span{width:2.5px;background:var(--c1);border-radius:1px;animation:pb .7s ease-in-out infinite alternate;}
+.p-bars span:nth-child(1){height:4px;animation-delay:0s;}
+.p-bars span:nth-child(2){height:10px;animation-delay:.12s;}
+.p-bars span:nth-child(3){height:7px;animation-delay:.06s;}
+.p-bars span:nth-child(4){height:11px;animation-delay:.2s;}
+@keyframes pb{from{transform:scaleY(.2);}to{transform:scaleY(1);}}
 
-/* ── MIDDLE: lyrics + cover ── */
-.mid{flex:1;display:flex;overflow:hidden;position:relative;}
+/* ══ MAIN ══ */
+.main{display:flex;overflow:hidden;}
 
-/* Cover / album art side */
-.cover-side{
-  width:200px;flex-shrink:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:20px;gap:16px;
-}
-.cover-art{
-  width:160px;height:160px;border-radius:12px;
-  background:linear-gradient(135deg,#c8426a,#6b2040);
-  display:flex;align-items:center;justify-content:center;
-  font-size:4rem;
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
-  flex-shrink:0;
-  transition:all .5s;
-  position:relative;
-  overflow:hidden;
-}
-.cover-art::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);
-}
-.cover-spin{animation:spin 8s linear infinite;}
-@keyframes spin{from{filter:hue-rotate(0deg);}to{filter:hue-rotate(360deg);}}
-.cover-title{font-size:.85rem;font-weight:700;text-align:center;color:#fff;line-height:1.3;}
-.cover-artist{font-size:.72rem;color:rgba(255,255,255,.5);text-align:center;margin-top:2px;}
+/* LEFT */
+.lp{width:252px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:18px 14px;gap:14px;border-right:1px solid var(--brd);background:rgba(0,0,0,.18);overflow-y:auto;scrollbar-width:none;}
+.lp::-webkit-scrollbar{display:none;}
 
-/* Lyrics scroll area */
-.lyrics-side{
-  flex:1;
-  overflow-y:auto;
-  padding:20px 28px 20px 0;
-  scroll-behavior:smooth;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,255,255,.1) transparent;
-  display:flex;flex-direction:column;
-  gap:0;
-}
-.lyrics-side::-webkit-scrollbar{width:4px;}
-.lyrics-side::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
+.album-wrap{position:relative;width:175px;height:175px;flex-shrink:0;}
+.al-ring{position:absolute;inset:-5px;border-radius:50%;border:1.5px solid transparent;background:linear-gradient(var(--bg2),var(--bg2)) padding-box,linear-gradient(135deg,var(--c1),transparent,var(--c2)) border-box;animation:rrot 4s linear infinite paused;}
+.al-ring.spin{animation-play-state:running;}
+@keyframes rrot{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.al-art{position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));display:flex;align-items:center;justify-content:center;font-size:3.8rem;box-shadow:0 14px 45px rgba(0,0,0,.5);overflow:hidden;transition:box-shadow .5s;}
+.al-art::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent 55%);}
+.al-emoji{position:relative;z-index:1;transition:transform .3s;}
+.album-wrap:hover .al-emoji{transform:scale(1.08);}
 
-/* LANG TABS */
-.lang-tabs{
-  display:flex;gap:6px;margin-bottom:16px;flex-shrink:0;
-  padding-left:2px;
-}
-.ltab{
-  font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  padding:5px 12px;border-radius:20px;
-  border:1px solid rgba(255,255,255,.15);
-  background:transparent;color:rgba(255,255,255,.4);
-  cursor:pointer;transition:all .2s;
-}
-.ltab.on{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35);color:#fff;}
+.si-title{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;text-align:center;line-height:1.3;}
+.si-artist{font-size:.75rem;color:var(--t2);text-align:center;margin-top:3px;}
+.si-badge{display:inline-flex;align-items:center;gap:4px;margin-top:7px;padding:4px 10px;border-radius:12px;background:rgba(232,69,106,.12);border:1px solid rgba(232,69,106,.2);font-size:.58rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#ff7096;}
 
-/* Lyric lines — SPOTIFY STYLE */
-.lyric-block{
-  padding:6px 0;
-  transition:all .3s ease;
-  cursor:default;
-  line-height:1.4;
-}
+/* Side action buttons */
+.s-acts{display:flex;gap:8px;width:100%;}
+.s-btn{flex:1;padding:8px 4px;border-radius:10px;border:1px solid var(--brd);background:var(--sur);font-size:.58rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t2);transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.s-btn:hover{border-color:var(--brd2);background:var(--sur2);color:#fff;}
+.s-btn.on{border-color:rgba(232,69,106,.38);background:rgba(232,69,106,.1);color:#ff7096;}
+.s-icon{font-size:.95rem;}
 
-.lyric-en{
-  font-size:1.55rem;font-weight:700;
-  color:rgba(255,255,255,.22);
-  transition:color .35s, font-size .35s, text-shadow .35s;
-  line-height:1.35;
-}
-.lyric-es{
-  font-size:.82rem;font-weight:400;
-  color:rgba(255,255,255,.15);
-  margin-top:3px;
-  transition:color .35s;
-  line-height:1.4;
-}
+/* Lang block */
+.lb{width:100%;}
+.lb-label{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin-bottom:6px;padding-left:2px;}
+.lb-pills{display:flex;gap:4px;}
+.lbp{flex:1;padding:7px 3px;border-radius:8px;border:1px solid var(--brd);background:transparent;font-size:.62rem;font-weight:600;color:var(--t3);transition:all .22s;text-align:center;}
+.lbp:hover{border-color:var(--brd2);color:var(--t2);}
+.lbp.on{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.24);color:#fff;}
 
-/* MONO (spanish only) */
-.lyric-mono{
-  font-size:1.55rem;font-weight:700;
-  color:rgba(255,255,255,.22);
-  transition:color .35s, font-size .35s, text-shadow .35s;
-  line-height:1.35;
-}
+/* Timer */
+.tmr{width:100%;border-radius:12px;border:1px solid var(--brd);background:var(--sur);padding:11px 13px;}
+.tmr-lbl{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin-bottom:5px;}
+.tmr-dig{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.tmr-sub{font-size:.62rem;color:var(--t3);margin-top:2px;}
 
-/* ACTIVE */
-.lyric-block.active .lyric-en,
-.lyric-block.active .lyric-mono{
-  color:#fff;
-  font-size:1.75rem;
-  text-shadow:0 0 30px rgba(255,255,255,.25);
-}
-.lyric-block.active .lyric-es{
-  color:rgba(255,255,255,.55);
-}
+/* EQ */
+.eq{width:100%;}
+.eq-lbl{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin-bottom:7px;}
+.eq-bars{display:flex;align-items:flex-end;gap:3.5px;height:38px;}
+.eq-b{flex:1;border-radius:2px 2px 0 0;background:linear-gradient(to top,var(--c1),var(--c2));opacity:.65;animation:eqa .6s ease-in-out infinite alternate;}
+.eq-bars.paused .eq-b{animation-play-state:paused;opacity:.15;}
+@keyframes eqa{from{transform:scaleY(.12);}to{transform:scaleY(1);}}
+.eq-b:nth-child(1){height:26px;animation-delay:0s;}
+.eq-b:nth-child(2){height:36px;animation-delay:.08s;}
+.eq-b:nth-child(3){height:20px;animation-delay:.16s;}
+.eq-b:nth-child(4){height:33px;animation-delay:.04s;}
+.eq-b:nth-child(5){height:17px;animation-delay:.12s;}
+.eq-b:nth-child(6){height:28px;animation-delay:.2s;}
+.eq-b:nth-child(7){height:22px;animation-delay:.06s;}
 
-/* PAST */
-.lyric-block.past .lyric-en,
-.lyric-block.past .lyric-mono{color:rgba(255,255,255,.18);}
-.lyric-block.past .lyric-es{color:rgba(255,255,255,.1);}
+/* ══ LYRICS ══ */
+.la{flex:1;overflow-y:auto;padding:28px 32px 24px 28px;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.05) transparent;}
+.la::-webkit-scrollbar{width:3px;}
+.la::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px;}
 
-/* spacers */
-.lyric-spacer{height:28px;}
+.lyb{padding:5px 0 5px 10px;margin-bottom:3px;border-radius:8px;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);border-left:2px solid transparent;}
+.lyb:hover{background:rgba(255,255,255,.025);}
+.lyb.active{border-left-color:var(--c1);}
 
-/* ── BOTTOM PLAYER ── */
-.player-bar{
-  flex-shrink:0;
-  background:rgba(10,10,10,.95);
-  backdrop-filter:blur(30px);
-  border-top:1px solid rgba(255,255,255,.07);
-  padding:14px 24px 18px;
-}
-.player-inner{max-width:700px;margin:0 auto;}
+.l-en{font-size:1.6rem;font-weight:600;color:rgba(255,255,255,.18);line-height:1.3;transition:all .4s cubic-bezier(.16,1,.3,1);}
+.l-es{font-size:.83rem;font-weight:300;color:rgba(255,255,255,.12);margin-top:4px;line-height:1.5;transition:color .4s;font-style:italic;}
+.l-mo{font-size:1.6rem;font-weight:600;color:rgba(255,255,255,.18);line-height:1.35;transition:all .4s cubic-bezier(.16,1,.3,1);}
 
-/* progress */
-.prog-wrap{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.time{font-size:.68rem;color:rgba(255,255,255,.4);min-width:32px;font-variant-numeric:tabular-nums;}
-.prog-track{
-  flex:1;height:4px;background:rgba(255,255,255,.12);
-  border-radius:2px;cursor:pointer;position:relative;
-}
-.prog-track:hover{height:6px;}
-.prog-fill{
-  height:100%;border-radius:2px;
-  background:#fff;
-  width:0%;transition:width .5s linear;
-  position:relative;
-}
-.prog-fill::after{
-  content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);
-  width:12px;height:12px;border-radius:50%;background:#fff;
-  opacity:0;transition:opacity .2s;
-}
-.prog-track:hover .prog-fill::after{opacity:1;}
+.lyb.active .l-en,.lyb.active .l-mo{color:#fff;font-size:1.82rem;text-shadow:0 0 36px rgba(255,255,255,.18);}
+.lyb.active .l-es{color:rgba(255,255,255,.52);}
+.lyb.past .l-en,.lyb.past .l-mo{color:rgba(255,255,255,.14);}
+.lyb.past .l-es{color:rgba(255,255,255,.07);}
 
-/* controls */
-.controls{display:flex;align-items:center;justify-content:center;gap:24px;}
-.btn-ctrl{
-  background:none;border:none;color:rgba(255,255,255,.6);
-  cursor:pointer;font-size:1rem;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;
-  width:36px;height:36px;border-radius:50%;
-}
-.btn-ctrl:hover{color:#fff;background:rgba(255,255,255,.08);}
-.btn-play-main{
-  width:48px;height:48px;border-radius:50%;
-  background:#fff;border:none;
-  color:#000;font-size:1.1rem;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .15s,background .15s;
-  box-shadow:0 4px 20px rgba(0,0,0,.4);
-}
-.btn-play-main:hover{transform:scale(1.06);background:#f0f0f0;}
-.btn-play-main:active{transform:scale(.97);}
+/* ══ PLAYER BAR ══ */
+.pbar{background:rgba(5,3,13,.94);backdrop-filter:blur(30px);border-top:1px solid var(--brd);padding:10px 18px 14px;}
+.pbar-in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;max-width:860px;margin:0 auto;}
 
-/* song info in player */
-.player-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.pinfo-left{display:flex;flex-direction:column;}
-.pinfo-title{font-size:.85rem;font-weight:700;color:#fff;}
-.pinfo-artist{font-size:.72rem;color:rgba(255,255,255,.5);}
-.vol-row{display:flex;align-items:center;gap:8px;}
-.vol-row span{font-size:.8rem;color:rgba(255,255,255,.4);}
-.vol-row input{width:80px;accent-color:#fff;cursor:pointer;}
+.np{display:flex;align-items:center;gap:9px;min-width:0;}
+.np-thumb{width:38px;height:38px;border-radius:7px;flex-shrink:0;background:linear-gradient(135deg,var(--c1),var(--c2));display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.np-inf{min-width:0;}
+.np-t{font-size:.8rem;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.np-a{font-size:.68rem;color:var(--t2);}
+.np-hrt{font-size:.95rem;margin-left:7px;transition:all .22s;color:var(--t3);flex-shrink:0;}
+.np-hrt.loved{color:#e8456a;animation:hpop .3s ease;}
+@keyframes hpop{0%{transform:scale(1);}50%{transform:scale(1.45);}100%{transform:scale(1);}}
 
-/* heart icon */
-.btn-heart{background:none;border:none;font-size:1.1rem;cursor:pointer;color:rgba(255,255,255,.4);transition:all .2s;}
-.btn-heart:hover{color:#c8426a;transform:scale(1.2);}
-.btn-heart.loved{color:#c8426a;}
+.cc{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:230px;}
+.cc-btns{display:flex;align-items:center;gap:15px;}
+.cb{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:.88rem;transition:all .2s;}
+.cb:hover{color:#fff;background:rgba(255,255,255,.07);}
+.cb.on{color:var(--c1);}
+.cb-play{width:43px;height:43px;border-radius:50%;background:#fff;color:#000;font-size:.98rem;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 4px 18px rgba(0,0,0,.4);}
+.cb-play:hover{transform:scale(1.07);}
+.cb-play:active{transform:scale(.95);}
 
-/* ── HERO OVERLAY (first load) ── */
-.hero-overlay{
-  position:fixed;inset:0;z-index:100;
-  background:linear-gradient(160deg,#180a10,#0a0005);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;text-align:center;padding:2rem;
-  transition:opacity .8s, visibility .8s;
-}
-.hero-overlay.gone{opacity:0;visibility:hidden;pointer-events:none;}
-.ho-heart{font-size:4rem;animation:hpulse 1.8s ease-in-out infinite;}
-@keyframes hpulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-.ho-sup{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:6px;color:#d4af6a;opacity:.7;}
-.ho-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,8vw,5rem);font-weight:300;line-height:1.1;}
-.ho-title em{font-style:italic;color:#e8789a;}
-.ho-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:rgba(245,192,208,.65);max-width:400px;}
-.ho-letter{
-  max-width:480px;width:100%;
-  border:1px solid rgba(212,175,106,.2);border-radius:8px;
-  padding:1.6rem 2rem;
-  background:rgba(30,8,18,.8);
-  font-family:'Cormorant Garamond',serif;
-  font-size:1rem;line-height:1.9;
-  color:rgba(253,245,240,.75);
-  text-align:left;
-  margin-top:4px;
-}
-.ho-letter .hl{color:#e8789a;font-style:italic;}
-.ho-sign{font-style:italic;color:#e8789a;text-align:right;margin-top:1rem;font-size:1.1rem;}
-.btn-enter{
-  margin-top:8px;
-  padding:14px 48px;border-radius:40px;
-  border:none;background:#c8426a;
-  color:#fff;font-size:.9rem;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;
-  cursor:pointer;transition:all .25s;
-  box-shadow:0 8px 30px rgba(200,66,106,.4);
-}
-.btn-enter:hover{background:#e05580;transform:translateY(-2px);box-shadow:0 12px 40px rgba(200,66,106,.5);}
+.pr{display:flex;align-items:center;gap:8px;width:100%;}
+.pt{font-size:.63rem;color:var(--t3);min-width:26px;font-variant-numeric:tabular-nums;}
+.pt.r{text-align:right;}
+.prog{flex:1;height:4px;background:rgba(255,255,255,.09);border-radius:2px;cursor:pointer;position:relative;transition:height .15s;}
+.prog:hover{height:6px;}
+.pfill{height:100%;border-radius:2px;width:0%;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .5s linear;position:relative;}
+.pthumb{position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:#fff;opacity:0;transition:opacity .2s;}
+.prog:hover .pthumb{opacity:1;}
+
+.cr{display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+.v-wrap{display:flex;align-items:center;gap:6px;}
+.v-icon{font-size:.82rem;color:var(--t2);}
+.v-sl{width:80px;height:4px;accent-color:#fff;cursor:pointer;}
+
+/* TOAST */
+.toast{position:fixed;bottom:106px;left:50%;transform:translateX(-50%) translateY(16px);padding:9px 18px;border-radius:30px;background:rgba(255,255,255,.1);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.14);font-size:.76rem;font-weight:500;color:#fff;opacity:0;transition:all .32s;pointer-events:none;z-index:300;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* MOBILE */
-@media(max-width:560px){
-  .cover-side{display:none;}
-  .lyrics-side{padding:16px 20px;}
-  .lyric-en,.lyric-mono{font-size:1.3rem;}
-  .lyric-block.active .lyric-en,
-  .lyric-block.active .lyric-mono{font-size:1.5rem;}
-  .ho-letter{padding:1.2rem 1.3rem;}
-  .top-bar{padding:10px 12px 8px;}
+@media(max-width:680px){
+  .lp{display:none;}
+  .la{padding:18px 18px 18px 14px;}
+  .l-en,.l-mo{font-size:1.28rem;}
+  .lyb.active .l-en,.lyb.active .l-mo{font-size:1.48rem;}
+  .pbar-in{grid-template-columns:1fr auto;}
+  .cr{display:none;}
+  .cc{min-width:170px;}
+}
+@media(max-width:400px){
+  .l-en,.l-mo{font-size:1.12rem;}
+  .lyb.active .l-en,.lyb.active .l-mo{font-size:1.3rem;}
 }
 </style>
 </head>
 <body>
 
-<!-- BG -->
-<canvas id="bgc"></canvas>
-<div id="petals"></div>
+<div id="bg-wrap">
+  <div class="blob"></div><div class="blob"></div><div class="blob"></div>
+  <div class="bg-grid"></div><div class="bg-vig"></div>
+</div>
+<div id="pw"></div>
 
-<!-- ══ HERO OVERLAY ══ -->
-<div class="hero-overlay" id="hero">
-  <span class="ho-heart">♥</span>
-  <p class="ho-sup">✦ Solo para ti ✦</p>
-  <h1 class="ho-title">Para mi <em>Princesa</em></h1>
-  <p class="ho-sub">Una playlist que nació de mi corazón...</p>
-  <div class="ho-letter">
-    <p>Mi amor hermosa,</p><br>
-    <p>Hay sentimientos tan grandes que las palabras se quedan pequeñas. Pero hay algo que la música sí puede expresar — esa sensación de que el mundo entero desaparece cuando estás cerca, que <span class="hl">tú eres mi lugar favorito en el universo.</span></p><br>
-    <p>Cada canción lleva tu nombre escrito entre las notas. Cierra los ojos y sabe que en ese momento estoy pensando en ti con una sonrisa que no puedo disimular.</p><br>
-    <p>Eres mi princesa. Mi calma. Mi razón. <span class="hl">Te amo más de lo que cualquier canción podría contener.</span></p>
-    <p class="ho-sign">Con todo mi corazón, tuyo ♥</p>
+<!-- HERO -->
+<div id="hero">
+  <div class="hi">
+    <div class="h-badge">✦ &nbsp; Una sorpresa especial para ti &nbsp; ✦</div>
+    <div class="h-heart">♥</div>
+    <h1 class="h-title">Para mi<br><em>Princesa</em></h1>
+    <p class="h-sub">Una playlist que nació directo de mi corazón</p>
+    <div class="letter">
+      <div class="l-stamp">💌</div>
+      <p class="l-greet">Mi amor hermosa,</p>
+      <div class="l-body">
+        <p>Hay sentimientos tan grandes que las palabras se quedan pequeñas. Pero hay algo que la música sí puede expresar — esa sensación de que el mundo entero desaparece cuando estás cerca, que <span class="hl">tú eres mi lugar favorito en el universo.</span></p>
+        <p>Cada canción aquí lleva tu nombre escrito entre las notas. Cuando las escuches, cierra los ojos y sabe que en ese momento estoy pensando en ti con una sonrisa que no puedo disimular.</p>
+        <p>Eres mi princesa. Mi calma. Mi razón de querer ser mejor cada día. <span class="hl">Te amo más de lo que cualquier melodía podría contener.</span></p>
+      </div>
+      <p class="l-sign">Con todo mi corazón, tuyo para siempre ♥</p>
+    </div>
+    <button class="btn-enter" onclick="enterApp()">♥ &nbsp; Escuchar &nbsp; ♥</button>
   </div>
-  <button class="btn-enter" onclick="enterApp()">✦ Escuchar ✦</button>
 </div>
 
-<!-- ══ APP ══ -->
-<div class="app" id="app">
-
-  <!-- TOP PILLS -->
+<!-- APP -->
+<div class="app" id="mainApp">
   <div class="top-bar" id="topBar"></div>
-
-  <!-- MID -->
-  <div class="mid">
-    <!-- Cover -->
-    <div class="cover-side">
-      <div class="cover-art" id="coverArt">
-        <span id="coverEmoji">🌹</span>
+  <div class="main">
+    <!-- LEFT PANEL -->
+    <div class="lp">
+      <div class="album-wrap">
+        <div class="al-ring" id="alRing"></div>
+        <div class="al-art" id="alArt"><span class="al-emoji" id="alEmoji">🌹</span></div>
       </div>
-      <div class="cover-title" id="coverTitle">Mi Princesa</div>
-      <div class="cover-artist" id="coverArtist">Remmy Valenzuela</div>
-    </div>
-
-    <!-- Lyrics -->
-    <div class="lyrics-side" id="lyricsSide">
-      <div class="lang-tabs" id="langTabs" style="display:none">
-        <button class="ltab on" id="tabEn" onclick="setLang('en')">English</button>
-        <button class="ltab" id="tabEs" onclick="setLang('es')">Español</button>
-        <button class="ltab" id="tabBi" onclick="setLang('bi')">Bilingüe</button>
+      <div style="text-align:center">
+        <div class="si-title" id="siT">Mi Princesa</div>
+        <div class="si-artist" id="siA">Remmy Valenzuela</div>
+        <div class="si-badge"><span>♪</span><span id="siBadge">En espera</span></div>
       </div>
-      <div id="lyricsContainer"></div>
+      <div class="s-acts">
+        <button class="s-btn" id="bFav" onclick="toggleFav()"><span class="s-icon">♡</span><span>Fav</span></button>
+        <button class="s-btn" id="bRep" onclick="toggleRepeat()"><span class="s-icon">↻</span><span>Repetir</span></button>
+        <button class="s-btn" id="bShu" onclick="toggleShuffle()"><span class="s-icon">⇄</span><span>Mix</span></button>
+      </div>
+      <div class="lb" id="langBlock">
+        <div class="lb-label">Idioma letra</div>
+        <div class="lb-pills">
+          <button class="lbp" id="lp-en" onclick="setLang('en')">EN</button>
+          <button class="lbp" id="lp-es" onclick="setLang('es')">ES</button>
+          <button class="lbp on" id="lp-bi" onclick="setLang('bi')">EN+ES</button>
+        </div>
+      </div>
+      <div class="tmr">
+        <div class="tmr-lbl">Tiempo</div>
+        <div class="tmr-dig" id="tmrD">0:00</div>
+        <div class="tmr-sub" id="tmrS">de --:--</div>
+      </div>
+      <div class="eq">
+        <div class="eq-lbl">Visualizador</div>
+        <div class="eq-bars paused" id="eqB">
+          <div class="eq-b" style="animation-duration:.5s"></div>
+          <div class="eq-b" style="animation-duration:.7s"></div>
+          <div class="eq-b" style="animation-duration:.45s"></div>
+          <div class="eq-b" style="animation-duration:.65s"></div>
+          <div class="eq-b" style="animation-duration:.55s"></div>
+          <div class="eq-b" style="animation-duration:.75s"></div>
+          <div class="eq-b" style="animation-duration:.48s"></div>
+        </div>
+      </div>
     </div>
+    <!-- LYRICS -->
+    <div class="la" id="la"><div id="lc"></div></div>
   </div>
-
   <!-- PLAYER BAR -->
-  <div class="player-bar">
-    <div class="player-inner">
-      <div class="player-info">
-        <div class="pinfo-left">
-          <span class="pinfo-title" id="pTitle">Mi Princesa</span>
-          <span class="pinfo-artist" id="pArtist">Remmy Valenzuela</span>
+  <div class="pbar">
+    <div class="pbar-in">
+      <div class="np">
+        <div class="np-thumb" id="npTh">🌹</div>
+        <div class="np-inf">
+          <div class="np-t" id="npT">Mi Princesa</div>
+          <div class="np-a" id="npA">Remmy Valenzuela</div>
         </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <button class="btn-heart" id="btnHeart" onclick="toggleHeart()">♡</button>
-          <div class="vol-row"><span>🔊</span><input type="range" min="0" max="1" step="0.02" value="0.9" oninput="setVol(this.value)"></div>
+        <button class="np-hrt" id="npH" onclick="toggleFav()">♡</button>
+      </div>
+      <div class="cc">
+        <div class="cc-btns">
+          <button class="cb" id="cbShu" onclick="toggleShuffle()" title="Mezclar">⇄</button>
+          <button class="cb" onclick="prevSong()" title="Anterior">⏮</button>
+          <button class="cb-play" id="cbPlay" onclick="togglePlay()">▶</button>
+          <button class="cb" onclick="nextSong()" title="Siguiente">⏭</button>
+          <button class="cb" id="cbRep" onclick="toggleRepeat()" title="Repetir">↻</button>
+        </div>
+        <div class="pr">
+          <span class="pt" id="tC">0:00</span>
+          <div class="prog" id="prog">
+            <div class="pfill" id="pf"><div class="pthumb"></div></div>
+          </div>
+          <span class="pt r" id="tD">--:--</span>
         </div>
       </div>
-      <div class="prog-wrap">
-        <span class="time" id="tCur">0:00</span>
-        <div class="prog-track" id="progTrack">
-          <div class="prog-fill" id="progFill"></div>
+      <div class="cr">
+        <div class="v-wrap">
+          <span class="v-icon" id="vIc">🔊</span>
+          <input class="v-sl" type="range" min="0" max="1" step="0.02" value="0.9" oninput="setVol(this.value)" id="vSl">
         </div>
-        <span class="time" id="tDur">--:--</span>
-      </div>
-      <div class="controls">
-        <button class="btn-ctrl" onclick="prevSong()" title="Anterior">⏮</button>
-        <button class="btn-play-main" id="btnPlay" onclick="togglePlay()">▶</button>
-        <button class="btn-ctrl" onclick="nextSong()" title="Siguiente">⏭</button>
       </div>
     </div>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-/* ══════════════════════════════
-   DATA
-══════════════════════════════ */
-const SONGS = [
-  {
-    file:"Remmy Valenzuela - Mi Princesa.mp3",
-    title:"Mi Princesa", artist:"Remmy Valenzuela",
-    emoji:"🌹", color:"#c8426a", color2:"#6b0f30",
-    bilingual:false,
-    lyrics:[
-      {t:2,   text:"Eres lo más bello que me ha pasado en la vida"},
-      {t:6,   text:"Eres la razón por la que cada mañana sonrío"},
-      {t:11,  text:"Desde que llegaste tú, ya nada es igual"},
-      {t:15,  text:"Porque me enamoraste sin querer, sin querer"},
-      {t:20,  text:"Eres mi princesa, mi reina, mi todo"},
-      {t:24,  text:"El amor de mi vida que tanto buscaba"},
-      {t:29,  text:"Contigo el mundo cambia de color"},
-      {t:33,  text:"Eres mi princesa, eres mi amor"},
-      {t:39,  text:"Te juro que no existe nadie más en este mundo"},
-      {t:43,  text:"Que me haga sentir lo que tú me haces sentir"},
-      {t:48,  text:"Cuando me miras así me dejas sin palabras"},
-      {t:52,  text:"Y me pregunto qué hice yo para merecerte a ti"},
-      {t:57,  text:"Eres mi princesa, mi reina, mi todo"},
-      {t:61,  text:"El amor de mi vida que tanto buscaba"},
-      {t:66,  text:"Contigo el mundo cambia de color"},
-      {t:70,  text:"Eres mi princesa, eres mi amor"},
-      {t:76,  text:"Quiero que sepas que siempre estaré aquí"},
-      {t:81,  text:"Para amarte, cuidarte y nunca dejarte ir"},
-      {t:86,  text:"Eres mi princesa, mi reina, mi todo"},
-      {t:91,  text:"El amor de mi vida que tanto buscaba"},
-      {t:96,  text:"Contigo el mundo cambia de color"},
-      {t:100, text:"Eres mi princesa, eres mi amor"},
-      {t:106, text:"Eres mi princesa..."},
-      {t:111, text:"Mi amor..."},
-    ]
-  },
-  {
-    file:"Una Lady Como Tú - MTZ Manuel Turizo Video Oficial.mp3",
-    title:"Una Lady Como Tú", artist:"MTZ Manuel Turizo",
-    emoji:"💃", color:"#8b5cf6", color2:"#3b0764",
-    bilingual:false,
-    lyrics:[
-      {t:3,   text:"Bebé, tú eres lo que siempre soñé"},
-      {t:7,   text:"Desde que te vi, supe que eras para mí"},
-      {t:12,  text:"Una lady como tú no se consigue fácil"},
-      {t:16,  text:"Por eso yo te cuido y te quiero sin igual"},
-      {t:21,  text:"Tus ojos me perdieron desde el primer día"},
-      {t:25,  text:"Tu sonrisa es la que le da sentido a mi vida"},
-      {t:30,  text:"Una lady como tú, tan única, tan bella"},
-      {t:34,  text:"Mereces todo el amor, mereces ser mi estrella"},
-      {t:39,  text:"Yo no sé qué hice para tenerte aquí"},
-      {t:43,  text:"Pero gracias a la vida por ponerte junto a mí"},
-      {t:48,  text:"Una lady como tú no se consigue fácil"},
-      {t:52,  text:"Por eso yo te cuido y te quiero sin igual"},
-      {t:57,  text:"Caminas y la gente se queda sin aliento"},
-      {t:61,  text:"Hablas y tus palabras son puro sentimiento"},
-      {t:66,  text:"Una lady como tú, tan única, tan bella"},
-      {t:70,  text:"Mereces todo el amor, mereces ser mi estrella"},
-      {t:76,  text:"Quiero que te quedes para siempre aquí conmigo"},
-      {t:81,  text:"Ser el hombre de tu vida, tu amor, tu abrigo"},
-      {t:86,  text:"Una lady como tú no se consigue fácil"},
-      {t:90,  text:"Por eso yo te cuido y te quiero sin igual"},
-      {t:95,  text:"Una lady... una lady como tú..."},
-      {t:100, text:"Mi amor, mi amor..."},
-    ]
-  },
-  {
-    file:"John Legend - All of Me (Official Video).mp3",
-    title:"All of Me", artist:"John Legend",
-    emoji:"💍", color:"#f59e0b", color2:"#78350f",
-    bilingual:true,
-    lyrics:[
-      {t:4,   en:"What would I do without your smart mouth?",          es:"¿Qué haría yo sin tu boca inteligente?"},
-      {t:8,   en:"Drawing me in and you kicking me out",               es:"Atrayéndome y luego alejándome"},
-      {t:12,  en:"You've got my head spinning, no kidding",            es:"Me tienes la cabeza girando, en serio"},
-      {t:16,  en:"I can't pin you down",                               es:"No puedo definirte"},
-      {t:20,  en:"What's going on in that beautiful mind?",            es:"¿Qué pasa en esa mente tan hermosa?"},
-      {t:24,  en:"I'm on your magical mystery ride",                   es:"Estoy en tu mágico viaje misterioso"},
-      {t:28,  en:"And I'm so dizzy, don't know what hit me",           es:"Y estoy tan mareado, no sé qué me pasó"},
-      {t:32,  en:"But I'll be alright",                                es:"Pero estaré bien"},
-      {t:36,  en:"My head's underwater but I'm breathing fine",        es:"Mi cabeza está bajo el agua pero respiro bien"},
-      {t:41,  en:"You're crazy and I'm out of my mind",                es:"Tú estás loca y yo estoy fuera de mi mente"},
-      {t:46,  en:"'Cause all of me loves all of you",                  es:"Porque todo de mí ama todo de ti"},
-      {t:50,  en:"Love your curves and all your edges",                es:"Amo tus curvas y todos tus bordes"},
-      {t:54,  en:"All your perfect imperfections",                     es:"Todas tus perfectas imperfecciones"},
-      {t:58,  en:"Give your all to me, I'll give my all to you",       es:"Dame todo de ti, yo te daré todo de mí"},
-      {t:63,  en:"You're my end and my beginning",                     es:"Eres mi fin y mi comienzo"},
-      {t:67,  en:"Even when I lose I'm winning",                       es:"Incluso cuando pierdo, estoy ganando"},
-      {t:71,  en:"'Cause I give you all of me",                        es:"Porque te doy todo de mí"},
-      {t:75,  en:"And you give me all of you",                         es:"Y tú me das todo de ti"},
-      {t:80,  en:"How many times do I have to tell you?",              es:"¿Cuántas veces tengo que decirte?"},
-      {t:84,  en:"Even when you're crying you're beautiful too",       es:"Que incluso cuando lloras eres hermosa también"},
-      {t:89,  en:"The world is beating you down, I'm around",          es:"El mundo te derrumba, pero yo estoy aquí"},
-      {t:93,  en:"Through every mood",                                 es:"En cada estado de ánimo"},
-      {t:97,  en:"Cards on the table, we're both showing hearts",      es:"Cartas sobre la mesa, los dos mostramos corazones"},
-      {t:102, en:"Risking it all, though it's hard",                   es:"Arriesgándolo todo, aunque sea difícil"},
-      {t:107, en:"'Cause all of me loves all of you",                  es:"Porque todo de mí ama todo de ti"},
-      {t:111, en:"Love your curves and all your edges",                es:"Amo tus curvas y todos tus bordes"},
-      {t:115, en:"All your perfect imperfections",                     es:"Todas tus perfectas imperfecciones"},
-      {t:119, en:"Give your all to me, I'll give my all to you",       es:"Dame todo de ti, yo te daré todo de mí"},
-      {t:124, en:"You're my end and my beginning",                     es:"Eres mi fin y mi comienzo"},
-      {t:128, en:"Even when I lose I'm winning",                       es:"Incluso cuando pierdo, estoy ganando"},
-      {t:132, en:"'Cause I give you all of me",                        es:"Porque te doy todo de mí"},
-      {t:136, en:"And you give me all of you",                         es:"Y tú me das todo de ti"},
-    ]
-  },
-  {
-    file:"Adele - Make You Feel My Love (Official Video).mp3",
-    title:"Make You Feel My Love", artist:"Adele",
-    emoji:"🕯️", color:"#06b6d4", color2:"#0c4a6e",
-    bilingual:true,
-    lyrics:[
-      {t:3,   en:"When the rain is blowing in your face",              es:"Cuando la lluvia azota tu rostro"},
-      {t:8,   en:"And the whole world is on your case",                es:"Y el mundo entero te presiona"},
-      {t:13,  en:"I could offer you a warm embrace",                   es:"Yo podría ofrecerte un cálido abrazo"},
-      {t:18,  en:"To make you feel my love",                           es:"Para que sientas mi amor"},
-      {t:23,  en:"When the evening shadows and the stars appear",      es:"Cuando las sombras de la noche y las estrellas aparecen"},
-      {t:28,  en:"And there is no one there to dry your tears",        es:"Y no hay nadie que seque tus lágrimas"},
-      {t:33,  en:"I could hold you for a million years",               es:"Yo podría tenerte entre mis brazos por un millón de años"},
-      {t:38,  en:"To make you feel my love",                           es:"Para que sientas mi amor"},
-      {t:44,  en:"I know you haven't made your mind up yet",           es:"Sé que aún no has tomado tu decisión"},
-      {t:49,  en:"But I would never do you wrong",                     es:"Pero yo jamás te haría daño"},
-      {t:53,  en:"I've known it from the moment that we met",          es:"Lo supe desde el momento en que nos conocimos"},
-      {t:57,  en:"No doubt in my mind where you belong",               es:"Sin ninguna duda de dónde perteneces"},
-      {t:62,  en:"I'd go hungry, I'd go black and blue",               es:"Pasaría hambre, lo daría todo"},
-      {t:67,  en:"I'd go crawling down the avenue",                    es:"Caminaría de rodillas por la avenida"},
-      {t:71,  en:"There's nothing that I wouldn't do",                 es:"No hay nada que no haría"},
-      {t:75,  en:"To make you feel my love",                           es:"Para que sientas mi amor"},
-      {t:80,  en:"The storms are raging on the rolling sea",           es:"Las tormentas azotan en el mar turbulento"},
-      {t:84,  en:"And on the highway of regret",                       es:"Y en la autopista del arrepentimiento"},
-      {t:88,  en:"The winds of change are blowing wild and free",      es:"Los vientos del cambio soplan libres y salvajes"},
-      {t:92,  en:"You ain't seen nothing like me yet",                 es:"Aún no has visto nada igual a mí"},
-      {t:97,  en:"I could make you happy, make your dreams come true", es:"Podría hacerte feliz, hacer tus sueños realidad"},
-      {t:101, en:"Nothing that I wouldn't do",                         es:"No hay nada que no haría"},
-      {t:105, en:"Go to the ends of the earth for you",                es:"Ir hasta el fin del mundo por ti"},
-      {t:109, en:"To make you feel my love",                           es:"Para que sientas mi amor"},
-      {t:113, en:"To make you feel my love",                           es:"Para que sientas mi amor"},
-    ]
-  }
+const SONGS=[
+  {file:"Remmy Valenzuela - Mi Princesa.mp3",title:"Mi Princesa",artist:"Remmy Valenzuela",emoji:"🌹",c1:"#e8456a",c2:"#8b1a38",bi:false,lyr:[
+    {t:2,tx:"Eres lo más bello que me ha pasado en la vida"},
+    {t:6,tx:"Eres la razón por la que cada mañana sonrío"},
+    {t:11,tx:"Desde que llegaste tú, ya nada es igual"},
+    {t:15,tx:"Porque me enamoraste sin querer, sin querer"},
+    {t:20,tx:"Eres mi princesa, mi reina, mi todo"},
+    {t:24,tx:"El amor de mi vida que tanto buscaba"},
+    {t:29,tx:"Contigo el mundo cambia de color"},
+    {t:33,tx:"Eres mi princesa, eres mi amor"},
+    {t:39,tx:"Te juro que no existe nadie más en este mundo"},
+    {t:43,tx:"Que me haga sentir lo que tú me haces sentir"},
+    {t:48,tx:"Cuando me miras así me dejas sin palabras"},
+    {t:52,tx:"Y me pregunto qué hice yo para merecerte a ti"},
+    {t:57,tx:"Eres mi princesa, mi reina, mi todo"},
+    {t:61,tx:"El amor de mi vida que tanto buscaba"},
+    {t:66,tx:"Contigo el mundo cambia de color"},
+    {t:70,tx:"Eres mi princesa, eres mi amor"},
+    {t:76,tx:"Quiero que sepas que siempre estaré aquí"},
+    {t:81,tx:"Para amarte, cuidarte y nunca dejarte ir"},
+    {t:86,tx:"Eres mi princesa, mi reina, mi todo"},
+    {t:91,tx:"El amor de mi vida que tanto buscaba"},
+    {t:96,tx:"Contigo el mundo cambia de color"},
+    {t:100,tx:"Eres mi princesa, eres mi amor"},
+    {t:106,tx:"Eres mi princesa..."},
+    {t:111,tx:"Mi amor..."},
+  ]},
+  {file:"Una Lady Como Tú - MTZ Manuel Turizo Video Oficial.mp3",title:"Una Lady Como Tú",artist:"MTZ Manuel Turizo",emoji:"💃",c1:"#8b5cf6",c2:"#3b0764",bi:false,lyr:[
+    {t:3,tx:"Bebé, tú eres lo que siempre soñé"},
+    {t:7,tx:"Desde que te vi, supe que eras para mí"},
+    {t:12,tx:"Una lady como tú no se consigue fácil"},
+    {t:16,tx:"Por eso yo te cuido y te quiero sin igual"},
+    {t:21,tx:"Tus ojos me perdieron desde el primer día"},
+    {t:25,tx:"Tu sonrisa es la que le da sentido a mi vida"},
+    {t:30,tx:"Una lady como tú, tan única, tan bella"},
+    {t:34,tx:"Mereces todo el amor, mereces ser mi estrella"},
+    {t:39,tx:"Yo no sé qué hice para tenerte aquí"},
+    {t:43,tx:"Pero gracias a la vida por ponerte junto a mí"},
+    {t:48,tx:"Una lady como tú no se consigue fácil"},
+    {t:52,tx:"Por eso yo te cuido y te quiero sin igual"},
+    {t:57,tx:"Caminas y la gente se queda sin aliento"},
+    {t:61,tx:"Hablas y tus palabras son puro sentimiento"},
+    {t:66,tx:"Una lady como tú, tan única, tan bella"},
+    {t:70,tx:"Mereces todo el amor, mereces ser mi estrella"},
+    {t:76,tx:"Quiero que te quedes para siempre aquí conmigo"},
+    {t:81,tx:"Ser el hombre de tu vida, tu amor, tu abrigo"},
+    {t:86,tx:"Una lady como tú no se consigue fácil"},
+    {t:90,tx:"Por eso yo te cuido y te quiero sin igual"},
+    {t:95,tx:"Una lady... una lady como tú..."},
+    {t:100,tx:"Mi amor, mi amor..."},
+  ]},
+  {file:"John Legend - All of Me (Official Video).mp3",title:"All of Me",artist:"John Legend",emoji:"💍",c1:"#f59e0b",c2:"#78350f",bi:true,lyr:[
+    {t:4,en:"What would I do without your smart mouth?",es:"¿Qué haría yo sin tu boca inteligente?"},
+    {t:8,en:"Drawing me in and you kicking me out",es:"Atrayéndome y luego alejándome"},
+    {t:12,en:"You've got my head spinning, no kidding",es:"Me tienes la cabeza girando, en serio"},
+    {t:16,en:"I can't pin you down",es:"No puedo definirte"},
+    {t:20,en:"What's going on in that beautiful mind?",es:"¿Qué pasa en esa mente tan hermosa?"},
+    {t:24,en:"I'm on your magical mystery ride",es:"Estoy en tu mágico viaje misterioso"},
+    {t:28,en:"And I'm so dizzy, don't know what hit me",es:"Y estoy tan mareado, no sé qué me pasó"},
+    {t:32,en:"But I'll be alright",es:"Pero estaré bien"},
+    {t:36,en:"My head's underwater but I'm breathing fine",es:"Mi cabeza está bajo el agua pero respiro bien"},
+    {t:41,en:"You're crazy and I'm out of my mind",es:"Tú estás loca y yo estoy fuera de mi mente"},
+    {t:46,en:"'Cause all of me loves all of you",es:"Porque todo de mí ama todo de ti"},
+    {t:50,en:"Love your curves and all your edges",es:"Amo tus curvas y todos tus bordes"},
+    {t:54,en:"All your perfect imperfections",es:"Todas tus perfectas imperfecciones"},
+    {t:58,en:"Give your all to me, I'll give my all to you",es:"Dame todo de ti, yo te daré todo de mí"},
+    {t:63,en:"You're my end and my beginning",es:"Eres mi fin y mi comienzo"},
+    {t:67,en:"Even when I lose I'm winning",es:"Incluso cuando pierdo, estoy ganando"},
+    {t:71,en:"'Cause I give you all of me",es:"Porque te doy todo de mí"},
+    {t:75,en:"And you give me all of you",es:"Y tú me das todo de ti"},
+    {t:80,en:"How many times do I have to tell you?",es:"¿Cuántas veces tengo que decirte?"},
+    {t:84,en:"Even when you're crying you're beautiful too",es:"Que incluso cuando lloras eres hermosa también"},
+    {t:89,en:"The world is beating you down, I'm around",es:"El mundo te derrumba, pero yo estoy aquí"},
+    {t:93,en:"Through every mood",es:"En cada estado de ánimo"},
+    {t:97,en:"Cards on the table, we're both showing hearts",es:"Cartas sobre la mesa, los dos mostramos corazones"},
+    {t:102,en:"Risking it all, though it's hard",es:"Arriesgándolo todo, aunque sea difícil"},
+    {t:107,en:"'Cause all of me loves all of you",es:"Porque todo de mí ama todo de ti"},
+    {t:111,en:"Love your curves and all your edges",es:"Amo tus curvas y todos tus bordes"},
+    {t:115,en:"All your perfect imperfections",es:"Todas tus perfectas imperfecciones"},
+    {t:119,en:"Give your all to me, I'll give my all to you",es:"Dame todo de ti, yo te daré todo de mí"},
+    {t:124,en:"You're my end and my beginning",es:"Eres mi fin y mi comienzo"},
+    {t:128,en:"Even when I lose I'm winning",es:"Incluso cuando pierdo, estoy ganando"},
+    {t:132,en:"'Cause I give you all of me",es:"Porque te doy todo de mí"},
+    {t:136,en:"And you give me all of you",es:"Y tú me das todo de ti"},
+  ]},
+  {file:"Adele - Make You Feel My Love (Official Video).mp3",title:"Make You Feel My Love",artist:"Adele",emoji:"🕯️",c1:"#22d3ee",c2:"#0c4a6e",bi:true,lyr:[
+    {t:3,en:"When the rain is blowing in your face",es:"Cuando la lluvia azota tu rostro"},
+    {t:8,en:"And the whole world is on your case",es:"Y el mundo entero te presiona"},
+    {t:13,en:"I could offer you a warm embrace",es:"Yo podría ofrecerte un cálido abrazo"},
+    {t:18,en:"To make you feel my love",es:"Para que sientas mi amor"},
+    {t:23,en:"When the evening shadows and the stars appear",es:"Cuando las sombras de la noche y las estrellas aparecen"},
+    {t:28,en:"And there is no one there to dry your tears",es:"Y no hay nadie que seque tus lágrimas"},
+    {t:33,en:"I could hold you for a million years",es:"Podría tenerte entre mis brazos por un millón de años"},
+    {t:38,en:"To make you feel my love",es:"Para que sientas mi amor"},
+    {t:44,en:"I know you haven't made your mind up yet",es:"Sé que aún no has tomado tu decisión"},
+    {t:49,en:"But I would never do you wrong",es:"Pero yo jamás te haría daño"},
+    {t:53,en:"I've known it from the moment that we met",es:"Lo supe desde el momento en que nos conocimos"},
+    {t:57,en:"No doubt in my mind where you belong",es:"Sin ninguna duda de dónde perteneces"},
+    {t:62,en:"I'd go hungry, I'd go black and blue",es:"Pasaría hambre, lo daría todo"},
+    {t:67,en:"I'd go crawling down the avenue",es:"Caminaría de rodillas por la avenida"},
+    {t:71,en:"There's nothing that I wouldn't do",es:"No hay nada que no haría"},
+    {t:75,en:"To make you feel my love",es:"Para que sientas mi amor"},
+    {t:80,en:"The storms are raging on the rolling sea",es:"Las tormentas azotan en el mar turbulento"},
+    {t:84,en:"And on the highway of regret",es:"Y en la autopista del arrepentimiento"},
+    {t:88,en:"The winds of change are blowing wild and free",es:"Los vientos del cambio soplan libres y salvajes"},
+    {t:92,en:"You ain't seen nothing like me yet",es:"Aún no has visto nada igual a mí"},
+    {t:97,en:"I could make you happy, make your dreams come true",es:"Podría hacerte feliz, hacer tus sueños realidad"},
+    {t:101,en:"Nothing that I wouldn't do",es:"No hay nada que no haría"},
+    {t:105,en:"Go to the ends of the earth for you",es:"Ir hasta el fin del mundo por ti"},
+    {t:109,en:"To make you feel my love",es:"Para que sientas mi amor"},
+    {t:113,en:"To make you feel my love",es:"Para que sientas mi amor"},
+  ]}
 ];
 
-/* ══════════════════════════════
-   STATE
-══════════════════════════════ */
-let curSong  = 0;
-let lang     = 'bi'; // 'en' | 'es' | 'bi'
-let audio    = null;
-let isPlaying= false;
-let activeLine = -1;
+let ci=0,audio=null,playing=false,repeat=false,shuffle=false,lang='bi',al=-1,favs=new Set();
 
-/* ══════════════════════════════
-   HERO
-══════════════════════════════ */
 function enterApp(){
   document.getElementById('hero').classList.add('gone');
-  loadSong(0, false);
+  loadSong(0,false);
+  toast('♥ Bienvenida, mi princesa ♥');
 }
 
-/* ══════════════════════════════
-   BUILD TOP BAR
-══════════════════════════════ */
-function buildTopBar(){
-  const tb = document.getElementById('topBar');
-  tb.innerHTML = '';
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+function theme(s){
+  document.documentElement.style.setProperty('--c1',s.c1);
+  document.documentElement.style.setProperty('--c2',s.c2);
+  const bl=document.querySelectorAll('.blob');
+  bl[0].style.background=s.c1; bl[1].style.background=s.c2;
+}
+
+function buildBar(){
+  const tb=document.getElementById('topBar');tb.innerHTML='';
   SONGS.forEach((s,i)=>{
-    const d = document.createElement('div');
-    d.className = 'song-pill' + (i===curSong?' active':'');
-    d.innerHTML = `<span class="pill-num">0${i+1}</span>
-      <div><div class="pill-title">${s.title}</div><div class="pill-artist">${s.artist}</div></div>`;
-    d.onclick = ()=>{ loadSong(i, false); };
+    const d=document.createElement('div');
+    d.className='spill'+(i===ci?' on':'')+(i===ci&&playing?' pl':'');
+    d.innerHTML=`<span class="p-dot"></span><div class="p-inf"><div class="p-name">${s.title}</div><div class="p-art">${s.artist}</div></div><div class="p-bars"><span></span><span></span><span></span><span></span></div>`;
+    d.onclick=()=>loadSong(i,true);
     tb.appendChild(d);
   });
 }
 
-/* ══════════════════════════════
-   LOAD SONG
-══════════════════════════════ */
-function loadSong(idx, autoplay){
-  if(audio){ audio.pause(); audio.src=''; }
-  curSong   = idx;
-  activeLine= -1;
-  isPlaying = false;
-
-  const s = SONGS[idx];
-
-  // audio
-  audio = new Audio(s.file);
-  audio.volume = document.querySelector('.vol-row input').value;
-  audio.addEventListener('timeupdate', onTimeUpdate);
-  audio.addEventListener('loadedmetadata', ()=>{
-    document.getElementById('tDur').textContent = fmt(audio.duration);
+function loadSong(idx,autoplay){
+  if(audio){audio.pause();audio.src='';}
+  ci=idx;al=-1;playing=false;
+  const s=SONGS[idx];
+  audio=new Audio(s.file);
+  audio.volume=parseFloat(document.getElementById('vSl').value);
+  audio.addEventListener('timeupdate',tick);
+  audio.addEventListener('loadedmetadata',()=>{
+    const d=fmt(audio.duration);
+    document.getElementById('tD').textContent=d;
+    document.getElementById('tmrS').textContent='de '+d;
   });
-  audio.addEventListener('ended', ()=>{ nextSong(); });
-
-  // ui
-  document.getElementById('pTitle').textContent   = s.title;
-  document.getElementById('pArtist').textContent  = s.artist;
-  document.getElementById('coverTitle').textContent  = s.title;
-  document.getElementById('coverArtist').textContent = s.artist;
-  document.getElementById('coverEmoji').textContent  = s.emoji;
-  document.getElementById('coverArt').style.background =
-    `linear-gradient(135deg,${s.color},${s.color2})`;
-  document.getElementById('progFill').style.width = '0%';
-  document.getElementById('tCur').textContent = '0:00';
-  document.getElementById('tDur').textContent = '--:--';
-  document.getElementById('btnPlay').textContent = '▶';
-
-  // bg glow
-  document.getElementById('bgc').style.background =
-    `radial-gradient(ellipse at 30% 20%, ${s.color}22 0%, transparent 60%),
-     radial-gradient(ellipse at 70% 80%, ${s.color2}33 0%, transparent 55%)`;
-
-  // lang tabs
-  const tabs = document.getElementById('langTabs');
-  tabs.style.display = s.bilingual ? 'flex' : 'none';
-  if(!s.bilingual) lang = 'es';
-  else if(lang==='es'||lang==='bi') lang = 'bi';
-
-  buildTopBar();
-  buildLyrics();
-  updateLangTabs();
-
-  if(autoplay){ audio.play(); isPlaying=true; document.getElementById('btnPlay').textContent='⏸'; }
+  audio.addEventListener('ended',()=>{ if(repeat){audio.currentTime=0;audio.play();}else nextSong(); });
+  theme(s);
+  document.getElementById('alEmoji').textContent=s.emoji;
+  document.getElementById('alArt').style.background=`linear-gradient(135deg,${s.c1},${s.c2})`;
+  document.getElementById('siT').textContent=s.title;
+  document.getElementById('siA').textContent=s.artist;
+  document.getElementById('npT').textContent=s.title;
+  document.getElementById('npA').textContent=s.artist;
+  document.getElementById('npTh').textContent=s.emoji;
+  document.getElementById('npTh').style.background=`linear-gradient(135deg,${s.c1},${s.c2})`;
+  document.getElementById('pf').style.width='0%';
+  document.getElementById('tC').textContent='0:00';
+  document.getElementById('tD').textContent='--:--';
+  document.getElementById('tmrD').textContent='0:00';
+  document.getElementById('tmrS').textContent='de --:--';
+  document.getElementById('cbPlay').textContent='▶';
+  document.getElementById('alRing').classList.remove('spin');
+  document.getElementById('eqB').classList.add('paused');
+  document.getElementById('siBadge').textContent='En espera';
+  document.getElementById('langBlock').style.display=s.bi?'':'none';
+  if(!s.bi) lang='es';
+  updateFavUI(); buildBar(); buildLyrics();
+  if(autoplay) play();
 }
 
-/* ══════════════════════════════
-   BUILD LYRICS
-══════════════════════════════ */
+function play(){audio.play().catch(()=>{});playing=true;document.getElementById('cbPlay').textContent='⏸';document.getElementById('alRing').classList.add('spin');document.getElementById('eqB').classList.remove('paused');document.getElementById('siBadge').textContent='Reproduciendo';buildBar();}
+function pause(){audio.pause();playing=false;document.getElementById('cbPlay').textContent='▶';document.getElementById('alRing').classList.remove('spin');document.getElementById('eqB').classList.add('paused');document.getElementById('siBadge').textContent='Pausado';buildBar();}
+function togglePlay(){if(!audio)return; playing?pause():play();}
+function nextSong(){const n=shuffle?((ci+1+Math.floor(Math.random()*(SONGS.length-1)))%SONGS.length):((ci+1)%SONGS.length);loadSong(n,playing);toast('▶ '+SONGS[n].title);}
+function prevSong(){if(audio&&audio.currentTime>3){audio.currentTime=0;return;}const p=(ci-1+SONGS.length)%SONGS.length;loadSong(p,playing);}
+function setVol(v){if(audio)audio.volume=parseFloat(v);document.getElementById('vIc').textContent=v<0.01?'🔇':v<0.5?'🔉':'🔊';}
+function toggleRepeat(){repeat=!repeat;document.getElementById('bRep').classList.toggle('on',repeat);document.getElementById('cbRep').classList.toggle('on',repeat);toast(repeat?'↻ Repetir activado':'↻ Repetir desactivado');}
+function toggleShuffle(){shuffle=!shuffle;document.getElementById('bShu').classList.toggle('on',shuffle);document.getElementById('cbShu').classList.toggle('on',shuffle);toast(shuffle?'⇄ Mezclar activado':'⇄ Mezclar desactivado');}
+function toggleFav(){if(favs.has(ci))favs.delete(ci);else favs.add(ci);updateFavUI();toast(favs.has(ci)?'♥ Añadida a favoritas':'♡ Eliminada de favoritas');}
+function updateFavUI(){const on=favs.has(ci);document.getElementById('bFav').classList.toggle('on',on);document.getElementById('npH').classList.toggle('loved',on);document.getElementById('npH').textContent=on?'♥':'♡';}
+
+function setLang(l){lang=l;['en','es','bi'].forEach(x=>{document.getElementById('lp-'+x).classList.toggle('on',x===l);});buildLyrics();al=-1;}
+
 function buildLyrics(){
-  const s   = SONGS[curSong];
-  const con = document.getElementById('lyricsContainer');
-  con.innerHTML = '';
-
-  // top spacer
-  con.appendChild(spacer());
-
-  s.lyrics.forEach((line,i)=>{
-    const block = document.createElement('div');
-    block.className = 'lyric-block';
-    block.dataset.line = i;
-
-    if(s.bilingual){
-      if(lang==='en'){
-        block.innerHTML = `<div class="lyric-en">${line.en}</div>`;
-      } else if(lang==='es'){
-        block.innerHTML = `<div class="lyric-mono">${line.es}</div>`;
-      } else {
-        // bilingual
-        block.innerHTML = `<div class="lyric-en">${line.en}</div>
-                           <div class="lyric-es">${line.es}</div>`;
-      }
+  const s=SONGS[ci],con=document.getElementById('lc');
+  con.innerHTML='';con.appendChild(sp(44));
+  s.lyr.forEach((ln,i)=>{
+    const b=document.createElement('div');b.className='lyb';b.dataset.i=i;
+    if(s.bi){
+      if(lang==='en') b.innerHTML=`<div class="l-en">${ln.en}</div>`;
+      else if(lang==='es') b.innerHTML=`<div class="l-mo">${ln.es}</div>`;
+      else b.innerHTML=`<div class="l-en">${ln.en}</div><div class="l-es">${ln.es}</div>`;
     } else {
-      block.innerHTML = `<div class="lyric-mono">${line.text}</div>`;
+      b.innerHTML=`<div class="l-mo">${ln.tx}</div>`;
     }
-
-    block.onclick = ()=>{
-      if(audio) audio.currentTime = line.t;
-      if(!isPlaying){ audio.play(); isPlaying=true; document.getElementById('btnPlay').textContent='⏸'; }
-    };
-
-    con.appendChild(block);
-    con.appendChild(spacer(6));
+    b.onclick=()=>{if(audio)audio.currentTime=ln.t;if(!playing)play();};
+    con.appendChild(b);con.appendChild(sp(4));
   });
-
-  // bottom spacer
-  con.appendChild(spacer(120));
+  con.appendChild(sp(130));
 }
+function sp(h){const d=document.createElement('div');d.style.height=h+'px';return d;}
 
-function spacer(h=20){
-  const d=document.createElement('div');
-  d.className='lyric-spacer';
-  d.style.height=h+'px';
-  return d;
-}
-
-/* ══════════════════════════════
-   SYNC LYRICS
-══════════════════════════════ */
-function onTimeUpdate(){
-  const t = audio.currentTime;
-  const dur = audio.duration||0;
-
-  // progress
+function tick(){
+  const t=audio.currentTime,dur=audio.duration||0;
   if(dur>0){
-    document.getElementById('progFill').style.width = (t/dur*100)+'%';
-    document.getElementById('tCur').textContent = fmt(t);
+    document.getElementById('pf').style.width=(t/dur*100)+'%';
+    const f=fmt(t);
+    document.getElementById('tC').textContent=f;
+    document.getElementById('tmrD').textContent=f;
   }
-
-  // find active line
-  const lyrics = SONGS[curSong].lyrics;
-  let cur = -1;
-  for(let k=0;k<lyrics.length;k++){
-    if(t >= lyrics[k].t) cur=k; else break;
-  }
-  if(cur===activeLine) return;
-  activeLine = cur;
-
-  const con = document.getElementById('lyricsContainer');
-  const blocks = con.querySelectorAll('.lyric-block');
-  blocks.forEach((b,k)=>{
+  const lyr=SONGS[ci].lyr;
+  let cur=-1;
+  for(let k=0;k<lyr.length;k++){if(t>=lyr[k].t)cur=k;else break;}
+  if(cur===al)return;al=cur;
+  const con=document.getElementById('lc');
+  con.querySelectorAll('.lyb').forEach((b,k)=>{
     b.classList.remove('active','past');
-    if(k===cur)      b.classList.add('active');
-    else if(k<cur)   b.classList.add('past');
+    if(k===cur)b.classList.add('active');
+    else if(k<cur)b.classList.add('past');
   });
-
-  // scroll active into center
-  const activeEl = con.querySelector('.lyric-block.active');
-  if(activeEl){
-    const ls = document.getElementById('lyricsSide');
-    const blockTop  = activeEl.offsetTop;
-    const blockH    = activeEl.offsetHeight;
-    const sideH     = ls.clientHeight;
-    ls.scrollTo({ top: blockTop - sideH/2 + blockH/2, behavior:'smooth' });
-  }
+  const ae=con.querySelector('.lyb.active');
+  if(ae){const la=document.getElementById('la');la.scrollTo({top:ae.offsetTop-la.clientHeight/2+ae.offsetHeight/2,behavior:'smooth'});}
 }
 
-/* ══════════════════════════════
-   CONTROLS
-══════════════════════════════ */
-function togglePlay(){
-  if(!audio) return;
-  if(isPlaying){ audio.pause(); isPlaying=false; document.getElementById('btnPlay').textContent='▶'; }
-  else          { audio.play(); isPlaying=true;  document.getElementById('btnPlay').textContent='⏸'; }
-}
-function nextSong(){ loadSong((curSong+1)%SONGS.length, true); }
-function prevSong(){
-  if(audio && audio.currentTime>3){ audio.currentTime=0; return; }
-  loadSong((curSong-1+SONGS.length)%SONGS.length, isPlaying);
-}
-function setVol(v){ if(audio) audio.volume=parseFloat(v); }
-function toggleHeart(){
-  const b=document.getElementById('btnHeart');
-  b.classList.toggle('loved');
-  b.textContent = b.classList.contains('loved') ? '♥' : '♡';
-}
-
-// progress seek
-document.getElementById('progTrack').addEventListener('click',e=>{
-  if(!audio||!audio.duration) return;
+document.getElementById('prog').addEventListener('click',e=>{
+  if(!audio||!audio.duration)return;
   const r=e.currentTarget.getBoundingClientRect();
-  audio.currentTime = ((e.clientX-r.left)/r.width)*audio.duration;
+  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
 });
 
-/* ══════════════════════════════
-   LANG TABS
-══════════════════════════════ */
-function setLang(l){
-  lang=l;
-  updateLangTabs();
-  buildLyrics();
-  activeLine=-1;
-}
-function updateLangTabs(){
-  ['en','es','bi'].forEach(l=>{
-    const b=document.getElementById('tab'+l.charAt(0).toUpperCase()+l.slice(1));
-    if(b) b.classList.toggle('on', l===lang);
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('hero').classList.contains('gone'))return;
+  if(e.code==='Space'){e.preventDefault();togglePlay();}
+  if(e.code==='ArrowRight')nextSong();
+  if(e.code==='ArrowLeft')prevSong();
+});
+
+function fmt(s){return Math.floor(s/60)+':'+(('0'+Math.floor(s%60)).slice(-2));}
+
+/* Stars */
+(function(){
+  const c=document.createElement('canvas');
+  c.style.cssText='position:absolute;inset:0;z-index:0;pointer-events:none;';
+  document.getElementById('bg-wrap').appendChild(c);
+  const ctx=c.getContext('2d');let W,H;const ss=[];
+  const res=()=>{W=c.width=innerWidth;H=c.height=innerHeight;};res();addEventListener('resize',res);
+  for(let i=0;i<130;i++)ss.push({x:Math.random()*4000,y:Math.random()*4000,r:Math.random()*1.2+.2,a:Math.random(),da:(Math.random()-.5)*.005});
+  const dr=()=>{ctx.clearRect(0,0,W,H);ss.forEach(s=>{s.a+=s.da;if(s.a<0||s.a>1)s.da*=-1;ctx.beginPath();ctx.arc(s.x%W,s.y%H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,215,235,${s.a*.38})`;ctx.fill();});requestAnimationFrame(dr);};dr();
+})();
+
+/* Petals */
+(function(){
+  const ct=document.getElementById('pw');
+  ['🌸','💕','🌹','❤️','✨','🌺','💗'].forEach((em,i)=>{
+    for(let j=0;j<3;j++){
+      const d=document.createElement('div');d.className='petal';d.textContent=em;
+      d.style.cssText=`left:${Math.random()*100}%;font-size:${8+Math.random()*12}px;animation-duration:${10+Math.random()*16}s;animation-delay:${Math.random()*22}s;`;
+      ct.appendChild(d);
+    }
   });
-}
-
-/* ══════════════════════════════
-   FMT
-══════════════════════════════ */
-function fmt(s){ return Math.floor(s/60)+':'+(('0'+Math.floor(s%60)).slice(-2)); }
-
-/* ══════════════════════════════
-   BG CANVAS
-══════════════════════════════ */
-(function(){
-  const c=document.getElementById('bgc'),ctx=c.getContext('2d');
-  let W,H;
-  const stars=[];
-  function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; }
-  resize(); addEventListener('resize',resize);
-  for(let i=0;i<90;i++) stars.push({x:Math.random()*3000,y:Math.random()*3000,r:Math.random()*1.2+.3,a:Math.random(),da:(Math.random()-.5)*.006});
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    stars.forEach(s=>{
-      s.a+=s.da; if(s.a<0||s.a>1)s.da*=-1;
-      ctx.beginPath(); ctx.arc(s.x%W,s.y%H,s.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(255,220,235,${s.a*.5})`; ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
 })();
 
-/* PETALS */
-(function(){
-  const cont=document.getElementById('petals');
-  const items=['🌸','💕','🌹','❤️','✨'];
-  for(let i=0;i<16;i++){
-    const d=document.createElement('div'); d.className='petal';
-    d.textContent=items[i%items.length];
-    d.style.cssText=`left:${Math.random()*100}%;font-size:${9+Math.random()*10}px;animation-duration:${12+Math.random()*14}s;animation-delay:${Math.random()*20}s;`;
-    cont.appendChild(d);
-  }
-})();
-
-/* INIT */
-buildTopBar();
+buildBar();
 </script>
 </body>
 </html>
